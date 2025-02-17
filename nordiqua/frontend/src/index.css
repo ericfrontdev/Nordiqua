@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 230 50% 98%;
+    --foreground: 230 60% 10%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 230 60% 10%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 60% 10%;
+ 
+    --primary: 209 100% 47%;
+    --primary-foreground: 0 0% 100%;
+ 
+    --secondary: 209 100% 47%;
+    --secondary-foreground: 0 0% 100%;
+ 
+    --muted: 230 30% 95%;
+    --muted-foreground: 230 20% 50%;
+ 
+    --accent: 209 100% 97%;
+    --accent-foreground: 209 100% 47%;
+ 
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 230 30% 90%;
+    --input: 230 30% 90%;
+    --ring: 209 100% 47%;
+ 
+    --radius: 1.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image: 
+      radial-gradient(circle at 0% 0%, hsl(var(--primary) / 0.15), transparent 25%),
+      radial-gradient(circle at 100% 0%, hsl(var(--accent) / 0.15), transparent 25%);
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .glass-effect {
+    @apply bg-white/80 backdrop-blur-xl border border-white/30 shadow-sm;
+  }
+  
+  .stat-card {
+    @apply relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-white to-white/90 p-6;
+    box-shadow: 
+      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 10px 40px -10px rgba(0, 0, 0, 0.1);
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.2)
+    );
+    mask: linear-gradient(black, transparent);
+  }
+
+  .stat-icon {
+    @apply relative z-10 rounded-2xl p-3;
+    background: linear-gradient(
+      45deg,
+      var(--icon-color-start),
+      var(--icon-color-end)
+    );
+  }
+
+  .stat-value {
+    @apply relative z-10 mt-2 text-4xl font-bold tracking-tight;
+    background: linear-gradient(
+      45deg,
+      var(--value-color-start),
+      var(--value-color-end)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
