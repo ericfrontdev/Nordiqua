@@ -12,12 +12,11 @@ import {
   Check,
   TrendingUp,
   CreditCard,
-  AlertCircle,
   LayoutGrid,
   List,
 } from 'lucide-react'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { CreateInvoiceDialog } from '@/components/CreateInvoiceDialog'
+import { CreateInvoiceDialog } from '@/components/CreateInvoiceDialog/CreateInvoiceDialog'
 import { useInvoiceStore } from '@/store/useInvoiceStore'
 
 const invoiceStats = [

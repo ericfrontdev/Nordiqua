@@ -8,7 +8,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { CreateInvoiceDialog } from '@/components/CreateInvoiceDialog'
+import { CreateInvoiceDialog } from '@/components/CreateInvoiceDialog/CreateInvoiceDialog'
 
 const stats = [
   {
