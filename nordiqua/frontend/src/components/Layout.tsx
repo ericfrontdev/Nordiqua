@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard,
   FileText,
@@ -10,10 +10,10 @@ import {
   Package,
   Bell,
   User,
-} from 'lucide-react';
-import { Button } from './ui/button';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { useAuthStore } from '@/store/useAuthStore';
+} from 'lucide-react'
+import { Button } from './ui/button'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { useAuthStore } from '@/store/useAuthStore'
 
 const navigation = [
   { name: 'Tableau de bord', href: '/dashboard', icon: LayoutDashboard },
@@ -21,21 +21,24 @@ const navigation = [
   { name: 'Clients', href: '/clients', icon: Users },
   { name: 'Produits', href: '/products', icon: Package },
   { name: 'Paramètres', href: '/settings', icon: SettingsIcon },
-];
+]
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const location = useLocation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  const { user, signOut } = useAuthStore();
+  const location = useLocation()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
+  const { user, signOut } = useAuthStore()
 
-  if (!user) return null;
+  if (!user) return null
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
       {/* Mobile Navbar */}
       <div className="fixed top-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-sm border-b border-gray-100/20 z-50 md:hidden">
         <div className="flex items-center justify-between h-full px-4">
-          <Link to="/dashboard" className="flex items-center gap-4">
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-4"
+          >
             <div className="bg-primary/10 p-2 rounded-lg">
               <FileText className="h-6 w-6 text-primary" />
             </div>
@@ -70,7 +73,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div className="glass-effect h-full rounded-2xl">
               <div className="flex flex-col h-full">
                 <div className="p-6 hidden md:block">
-                  <Link to="/dashboard" className="flex items-center gap-4">
+                  <Link
+                    to="/dashboard"
+                    className="flex items-center gap-4"
+                  >
                     <div className="bg-primary/10 p-3 rounded-lg">
                       <FileText className="h-7 w-7 text-primary" />
                     </div>
@@ -81,7 +87,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </div>
                 <nav className="flex-1 px-4 pt-4">
                   {navigation.map((item) => {
-                    const isActive = location.pathname === item.href;
+                    const isActive = location.pathname === item.href
                     return (
                       <Link
                         key={item.name}
@@ -96,18 +102,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         <item.icon className="h-5 w-5" />
                         <span className="font-medium">{item.name}</span>
                       </Link>
-                    );
+                    )
                   })}
                 </nav>
                 <div className="p-4">
-                  <div className="bg-muted rounded-xl p-4">
-                    <p className="text-sm text-muted-foreground">
-                      Version Pro disponible
-                    </p>
-                    <button className="mt-2 w-full bg-secondary text-white px-4 py-2 text-sm font-medium hover:bg-secondary/90 transition-colors rounded-xl">
-                      Mettre à niveau
-                    </button>
-                  </div>
+                  <button className="mt-2 w-full bg-orange-400 text-white px-4 py-2 text-sm font-medium  transition-colors rounded-xl">
+                    Mettre à niveau
+                  </button>
                 </div>
               </div>
             </div>
@@ -141,7 +142,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger asChild>
-                    <Button variant="ghost" size="sm" className="gap-3 rounded-xl h-9 px-3">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="gap-3 rounded-xl h-9 px-3"
+                    >
                       <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center">
                         <User className="h-4 w-4 text-primary" />
                       </div>
@@ -181,12 +186,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Contenu principal */}
-            <div className="p-4 md:p-6">
-              {children}
-            </div>
+            <div className="p-4 md:p-6">{children}</div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
+import React from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Building2,
   Mail,
@@ -15,12 +15,12 @@ import {
   ChevronDown,
   LayoutGrid,
   List,
-} from 'lucide-react';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { CreateClientDialog } from '@/components/CreateClientDialog';
-import { EditClientDialog } from '@/components/EditClientDialog';
-import { ContactClientDialog } from '@/components/ContactClientDialog';
-import { useClientStore } from '@/store/useClientStore';
+} from 'lucide-react'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { CreateClientDialog } from '@/components/CreateClientDialog'
+import { EditClientDialog } from '@/components/EditClientDialog'
+import { ContactClientDialog } from '@/components/ContactClientDialog'
+import { useClientStore } from '@/store/useClientStore'
 
 const clientStats = [
   {
@@ -53,13 +53,13 @@ const clientStats = [
       value: ['#6d28d9', '#8b5cf6'],
     },
   },
-];
+]
 
 const sortOptions = [
   { label: 'Nom', field: 'name' },
   { label: 'Nombre de factures', field: 'invoicesCount' },
   { label: 'Montant total', field: 'totalAmount' },
-] as const;
+] as const
 
 export function Clients() {
   const {
@@ -70,14 +70,16 @@ export function Clients() {
     filters,
     sort,
     searchQuery,
-  } = useClientStore();
-  const [editingClient, setEditingClient] = React.useState<number | null>(null);
-  const [contactingClient, setContactingClient] = React.useState<number | null>(null);
-  const [isFilterOpen, setIsFilterOpen] = React.useState(false);
-  const [isSortOpen, setIsSortOpen] = React.useState(false);
-  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
+  } = useClientStore()
+  const [editingClient, setEditingClient] = React.useState<number | null>(null)
+  const [contactingClient, setContactingClient] = React.useState<number | null>(
+    null
+  )
+  const [isFilterOpen, setIsFilterOpen] = React.useState(false)
+  const [isSortOpen, setIsSortOpen] = React.useState(false)
+  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid')
 
-  const clients = getFilteredAndSortedClients();
+  const clients = getFilteredAndSortedClients()
 
   const renderGridView = () => (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
@@ -118,7 +120,7 @@ export function Clients() {
                   sideOffset={5}
                   align="end"
                 >
-                  <DropdownMenu.Item 
+                  <DropdownMenu.Item
                     className="flex items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-[20px] cursor-pointer"
                     onClick={() => setEditingClient(client.id)}
                   >
@@ -129,7 +131,7 @@ export function Clients() {
               </DropdownMenu.Portal>
             </DropdownMenu.Root>
           </div>
-          
+
           <div className="mt-6 space-y-3 md:space-y-4">
             <div className="flex items-center text-sm text-muted-foreground">
               <Mail className="mr-2 h-4 w-4" />
@@ -168,8 +170,8 @@ export function Clients() {
                 <FileText className="h-4 w-4 mr-2" />
                 <span className="hidden sm:inline">Factures</span>
               </Button>
-              <Button 
-                size="sm" 
+              <Button
+                size="sm"
                 className="w-full rounded-xl text-sm"
                 onClick={() => setContactingClient(client.id)}
               >
@@ -181,7 +183,7 @@ export function Clients() {
         </div>
       ))}
     </div>
-  );
+  )
 
   const renderListView = () => (
     <div className="glass-effect rounded-[2rem] overflow-hidden">
@@ -189,18 +191,35 @@ export function Clients() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100/20">
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Client</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Contact</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Email</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Téléphone</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Factures</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Total</th>
-              <th className="px-6 py-4 text-right text-sm font-medium text-muted-foreground">Actions</th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Client
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Contact
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Email
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Téléphone
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Factures
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Total
+              </th>
+              <th className="px-6 py-4 text-right text-sm font-medium text-muted-foreground">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100/20">
             {clients.map((client) => (
-              <tr key={client.id} className="group hover:bg-primary/5 transition-colors">
+              <tr
+                key={client.id}
+                className="group hover:bg-primary/5 transition-colors"
+              >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -215,7 +234,9 @@ export function Clients() {
                 <td className="px-6 py-4 text-sm">{client.email}</td>
                 <td className="px-6 py-4 text-sm">{client.phone}</td>
                 <td className="px-6 py-4">
-                  <span className="text-sm font-medium">{client.invoicesCount}</span>
+                  <span className="text-sm font-medium">
+                    {client.invoicesCount}
+                  </span>
                 </td>
                 <td className="px-6 py-4">
                   <span className="text-sm font-medium">
@@ -273,7 +294,7 @@ export function Clients() {
                           sideOffset={5}
                           align="end"
                         >
-                          <DropdownMenu.Item 
+                          <DropdownMenu.Item
                             className="flex items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-[20px] cursor-pointer"
                             onClick={() => setEditingClient(client.id)}
                           >
@@ -291,7 +312,7 @@ export function Clients() {
         </table>
       </div>
     </div>
-  );
+  )
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -338,7 +359,10 @@ export function Clients() {
                 <p className="stat-value text-2xl md:text-4xl">{stat.value}</p>
               </div>
             </div>
-            <div className="absolute bottom-0 right-0 -mb-6 -mr-6 opacity-[0.07] transition-transform duration-300 group-hover:scale-110">
+            <div
+              className="absolute bottom-0 right-0 -mb-6 -mr-6 opacity-[0.07] transition-transform duration-300 group-hover:scale-110"
+              style={{ color: stat.colors.icon[0] }}
+            >
               <stat.icon className="h-24 w-24 md:h-32 md:w-32" />
             </div>
           </div>
@@ -358,9 +382,15 @@ export function Clients() {
           />
         </div>
         <div className="flex gap-2">
-          <DropdownMenu.Root open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+          <DropdownMenu.Root
+            open={isFilterOpen}
+            onOpenChange={setIsFilterOpen}
+          >
             <DropdownMenu.Trigger asChild>
-              <Button variant="outline" className="rounded-xl flex-1 sm:flex-none">
+              <Button
+                variant="outline"
+                className="rounded-xl flex-1 sm:flex-none"
+              >
                 <Filter className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Filtres</span>
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -418,9 +448,15 @@ export function Clients() {
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
 
-          <DropdownMenu.Root open={isSortOpen} onOpenChange={setIsSortOpen}>
+          <DropdownMenu.Root
+            open={isSortOpen}
+            onOpenChange={setIsSortOpen}
+          >
             <DropdownMenu.Trigger asChild>
-              <Button variant="outline" className="rounded-xl flex-1 sm:flex-none">
+              <Button
+                variant="outline"
+                className="rounded-xl flex-1 sm:flex-none"
+              >
                 <ArrowUpDown className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Trier</span>
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -439,9 +475,9 @@ export function Clients() {
                       if (sort.field === option.field) {
                         setSort({
                           direction: sort.direction === 'asc' ? 'desc' : 'asc',
-                        });
+                        })
                       } else {
-                        setSort({ field: option.field, direction: 'asc' });
+                        setSort({ field: option.field, direction: 'asc' })
                       }
                     }}
                   >
@@ -497,5 +533,5 @@ export function Clients() {
         />
       )}
     </div>
-  );
+  )
 }

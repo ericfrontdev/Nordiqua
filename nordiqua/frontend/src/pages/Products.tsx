@@ -1,5 +1,5 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
+import React from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Package,
   Search,
@@ -14,11 +14,11 @@ import {
   Box,
   LayoutGrid,
   List,
-} from 'lucide-react';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { useProductStore } from '@/store/useProductStore';
-import { CreateProductDialog } from '@/components/CreateProductDialog';
-import { EditProductDialog } from '@/components/EditProductDialog';
+} from 'lucide-react'
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { useProductStore } from '@/store/useProductStore'
+import { CreateProductDialog } from '@/components/CreateProductDialog'
+import { EditProductDialog } from '@/components/EditProductDialog'
 
 const productStats = [
   {
@@ -42,7 +42,7 @@ const productStats = [
     },
   },
   {
-    name: 'Chiffre d\'affaires',
+    name: "Chiffre d'affaires",
     value: '45 600 €',
     change: '+12.5%',
     icon: Package,
@@ -51,7 +51,7 @@ const productStats = [
       value: ['#6d28d9', '#8b5cf6'],
     },
   },
-];
+]
 
 export function Products() {
   const {
@@ -62,18 +62,20 @@ export function Products() {
     filters,
     sort,
     searchQuery,
-  } = useProductStore();
+  } = useProductStore()
 
-  const [isFilterOpen, setIsFilterOpen] = React.useState(false);
-  const [isSortOpen, setIsSortOpen] = React.useState(false);
-  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
-  const [editingProduct, setEditingProduct] = React.useState<number | null>(null);
+  const [isFilterOpen, setIsFilterOpen] = React.useState(false)
+  const [isSortOpen, setIsSortOpen] = React.useState(false)
+  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid')
+  const [editingProduct, setEditingProduct] = React.useState<number | null>(
+    null
+  )
 
-  const products = getFilteredAndSortedProducts();
+  const products = getFilteredAndSortedProducts()
 
   const handleEdit = (productId: number) => {
-    setEditingProduct(productId);
-  };
+    setEditingProduct(productId)
+  }
 
   const renderGridView = () => (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
@@ -153,11 +155,13 @@ export function Products() {
               </div>
             </div>
             <div className="mt-4 flex items-center justify-between">
-              <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold ${
-                product.active
-                  ? 'bg-emerald-50 text-emerald-600'
-                  : 'bg-red-50 text-red-600'
-              }`}>
+              <span
+                className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold ${
+                  product.active
+                    ? 'bg-emerald-50 text-emerald-600'
+                    : 'bg-red-50 text-red-600'
+                }`}
+              >
                 {product.active ? 'Actif' : 'Inactif'}
               </span>
               <span className="text-sm text-muted-foreground">
@@ -168,7 +172,7 @@ export function Products() {
         </div>
       ))}
     </div>
-  );
+  )
 
   const renderListView = () => (
     <div className="glass-effect rounded-[2rem] overflow-hidden">
@@ -176,18 +180,35 @@ export function Products() {
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-100/20">
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Produit</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Type</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Référence</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Prix</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">TVA</th>
-              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">Statut</th>
-              <th className="px-6 py-4 text-right text-sm font-medium text-muted-foreground">Actions</th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Produit
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Type
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Référence
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Prix
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                TVA
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-medium text-muted-foreground">
+                Statut
+              </th>
+              <th className="px-6 py-4 text-right text-sm font-medium text-muted-foreground">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100/20">
             {products.map((product) => (
-              <tr key={product.id} className="group hover:bg-primary/5 transition-colors">
+              <tr
+                key={product.id}
+                className="group hover:bg-primary/5 transition-colors"
+              >
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -199,7 +220,9 @@ export function Products() {
                     </div>
                     <div>
                       <span className="font-medium">{product.name}</span>
-                      <p className="text-sm text-muted-foreground line-clamp-1">{product.description}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-1">
+                        {product.description}
+                      </p>
                     </div>
                   </div>
                 </td>
@@ -222,11 +245,13 @@ export function Products() {
                   <span className="text-sm font-medium">{product.tax}%</span>
                 </td>
                 <td className="px-6 py-4">
-                  <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold ${
-                    product.active
-                      ? 'bg-emerald-50 text-emerald-600'
-                      : 'bg-red-50 text-red-600'
-                  }`}>
+                  <span
+                    className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-semibold ${
+                      product.active
+                        ? 'bg-emerald-50 text-emerald-600'
+                        : 'bg-red-50 text-red-600'
+                    }`}
+                  >
                     {product.active ? 'Actif' : 'Inactif'}
                   </span>
                 </td>
@@ -284,7 +309,7 @@ export function Products() {
         </table>
       </div>
     </div>
-  );
+  )
 
   return (
     <div className="space-y-6 md:space-y-8">
@@ -331,7 +356,10 @@ export function Products() {
                 <p className="stat-value text-2xl md:text-4xl">{stat.value}</p>
               </div>
             </div>
-            <div className="absolute bottom-0 right-0 -mb-6 -mr-6 opacity-[0.07] transition-transform duration-300 group-hover:scale-110">
+            <div
+              className="absolute bottom-0 right-0 -mb-6 -mr-6 opacity-[0.07] transition-transform duration-300 group-hover:scale-110"
+              style={{ color: stat.colors.icon[0] }}
+            >
               <stat.icon className="h-24 w-24 md:h-32 md:w-32" />
             </div>
           </div>
@@ -351,9 +379,15 @@ export function Products() {
           />
         </div>
         <div className="flex gap-2">
-          <DropdownMenu.Root open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+          <DropdownMenu.Root
+            open={isFilterOpen}
+            onOpenChange={setIsFilterOpen}
+          >
             <DropdownMenu.Trigger asChild>
-              <Button variant="outline" className="rounded-xl flex-1 sm:flex-none">
+              <Button
+                variant="outline"
+                className="rounded-xl flex-1 sm:flex-none"
+              >
                 <Filter className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Filtres</span>
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -415,9 +449,15 @@ export function Products() {
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
 
-          <DropdownMenu.Root open={isSortOpen} onOpenChange={setIsSortOpen}>
+          <DropdownMenu.Root
+            open={isSortOpen}
+            onOpenChange={setIsSortOpen}
+          >
             <DropdownMenu.Trigger asChild>
-              <Button variant="outline" className="rounded-xl flex-1 sm:flex-none">
+              <Button
+                variant="outline"
+                className="rounded-xl flex-1 sm:flex-none"
+              >
                 <ArrowUpDown className="h-4 w-4 sm:mr-2" />
                 <span className="hidden sm:inline">Trier</span>
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -436,9 +476,9 @@ export function Products() {
                       if (sort.field === field) {
                         setSort({
                           direction: sort.direction === 'asc' ? 'desc' : 'asc',
-                        });
+                        })
                       } else {
-                        setSort({ field: field as any, direction: 'asc' });
+                        setSort({ field: field as any, direction: 'asc' })
                       }
                     }}
                   >
@@ -491,5 +531,5 @@ export function Products() {
         />
       )}
     </div>
-  );
+  )
 }

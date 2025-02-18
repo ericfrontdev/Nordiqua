@@ -12,6 +12,7 @@ import {
   Check,
   TrendingUp,
   CreditCard,
+  AlertCircle,
   LayoutGrid,
   List,
 } from 'lucide-react'
