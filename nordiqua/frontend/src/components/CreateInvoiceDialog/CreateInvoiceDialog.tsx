@@ -1,5 +1,6 @@
 // /components/CreateInvoiceDialog/CreateInvoiceDialog.tsx
-import React from 'react'
+
+import React, { useEffect } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { X, Plus } from 'lucide-react'
 import { Button } from '../ui/button'
@@ -10,26 +11,77 @@ import html2canvas from 'html2canvas'
 import InvoiceForm from './InvoiceForm'
 import InvoicePreview from '../InvoicePreview/index'
 
+// Exemple d'interface (à adapter selon vos données)
+interface Invoice {
+  id: string
+  client: string
+  date: string
+  amount: number
+  status: 'pending' | 'paid' | 'overdue'
+  // Ajoutez ici d'autres champs si nécessaire (ex: items)
+}
+
 export interface InvoiceItem {
   description: string
   quantity: number
   price: number
 }
 
-export function CreateInvoiceDialog() {
-  const [open, setOpen] = React.useState(false)
+// Props du composant :
+// - `invoice` (optionnelle) si on veut éditer une facture existante
+// - `open` et `onOpenChange` pour contrôler l'ouverture du Dialog depuis l'extérieur
+interface CreateInvoiceDialogProps {
+  invoice?: Invoice
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+export function CreateInvoiceDialog({
+  invoice,
+  open,
+  onOpenChange,
+}: CreateInvoiceDialogProps) {
+  // Store
+  const addInvoice = useInvoiceStore((state) => state.addInvoice)
+  const updateInvoice = useInvoiceStore((state) => state.updateInvoice) // Assurez-vous d'avoir cette méthode dans votre store
+
+  // États du formulaire
   const [items, setItems] = React.useState<InvoiceItem[]>([
     { description: '', quantity: 1, price: 0 },
   ])
-  const addInvoice = useInvoiceStore((state) => state.addInvoice)
   const [selectedClient, setSelectedClient] = React.useState('')
   const [invoiceDate, setInvoiceDate] = React.useState(
     new Date().toISOString().split('T')[0]
   )
-  const invoiceNumber = React.useMemo(() => generateInvoiceNumber(), [])
+  const [invoiceNumber, setInvoiceNumber] = React.useState(() =>
+    generateInvoiceNumber()
+  )
   const [selectedTemplate, setSelectedTemplate] = React.useState('template1')
   const [logo, setLogo] = React.useState<string | null>(null)
 
+  // Préremplir les champs si `invoice` est présent (mode édition)
+  useEffect(() => {
+    if (invoice) {
+      setInvoiceNumber(invoice.id)
+      setSelectedClient(invoice.client)
+      setInvoiceDate(invoice.date)
+      // Si vous gérez des items en base, vous pouvez aussi faire : setItems(invoice.items)
+      // etc.
+    } else {
+      // Mode création : remettre des valeurs par défaut
+      setInvoiceNumber(generateInvoiceNumber())
+      setSelectedClient('')
+      setInvoiceDate(new Date().toISOString().split('T')[0])
+      setItems([{ description: '', quantity: 1, price: 0 }])
+    }
+  }, [invoice])
+
+  // Calculs
+  const total = items.reduce((sum, item) => sum + item.quantity * item.price, 0)
+  const tva = total * 0.2
+  const totalTTC = total + tva
+
+  // Gestion du logo
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -41,6 +93,7 @@ export function CreateInvoiceDialog() {
     }
   }
 
+  // Ajout / suppression / mise à jour d'un article
   const addItem = () => {
     setItems([...items, { description: '', quantity: 1, price: 0 }])
   }
@@ -62,10 +115,7 @@ export function CreateInvoiceDialog() {
     setItems(items.filter((_, i) => i !== index))
   }
 
-  const total = items.reduce((sum, item) => sum + item.quantity * item.price, 0)
-  const tva = total * 0.2
-  const totalTTC = total + tva
-
+  // Soumission du formulaire
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -74,23 +124,32 @@ export function CreateInvoiceDialog() {
       return
     }
 
-    const newInvoice = {
-      id: invoiceNumber,
-      client: selectedClient,
-      date: invoiceDate,
-      amount: total,
-      status: 'pending' as const,
+    if (invoice) {
+      // MODE ÉDITION : mettre à jour la facture existante
+      updateInvoice({
+        ...invoice,
+        id: invoiceNumber,
+        client: selectedClient,
+        date: invoiceDate,
+        amount: total,
+      })
+    } else {
+      // MODE CRÉATION : créer une nouvelle facture
+      const newInvoice = {
+        id: invoiceNumber,
+        client: selectedClient,
+        date: invoiceDate,
+        amount: total,
+        status: 'pending' as const,
+      }
+      addInvoice(newInvoice)
     }
 
-    addInvoice(newInvoice)
-    setOpen(false)
-
-    // Réinitialisation du formulaire
-    setItems([{ description: '', quantity: 1, price: 0 }])
-    setSelectedClient('')
-    setInvoiceDate(new Date().toISOString().split('T')[0])
+    // Fermer la modal
+    onOpenChange(false)
   }
 
+  // Export en PDF
   const exportPDF = async () => {
     const input = document.getElementById('invoice-preview')
     if (input) {
@@ -113,24 +172,32 @@ export function CreateInvoiceDialog() {
   return (
     <Dialog.Root
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={onOpenChange}
     >
-      <Dialog.Trigger asChild>
-        <Button className="whitespace-nowrap rounded-lg">
-          <Plus className="h-4 w-4 mr-2" />
-          <span className="hidden md:inline">Nouvelle facture</span>
-          <span className="md:hidden">Facture</span>
-        </Button>
-      </Dialog.Trigger>
+      {/* 
+        Si vous souhaitez toujours afficher un bouton "Nouvelle facture" 
+        lorsque invoice est vide, laissez-le. Sinon, vous pouvez le conditionner. 
+      */}
+      {!invoice && (
+        <Dialog.Trigger asChild>
+          <Button className="whitespace-nowrap rounded-lg">
+            <Plus className="h-4 w-4 mr-2" />
+            <span className="hidden md:inline">Nouvelle facture</span>
+            <span className="md:hidden">Facture</span>
+          </Button>
+        </Dialog.Trigger>
+      )}
+
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50" />
-        <Dialog.Content className="fixed left-[50%] top-[50%] max-h-[85vh] w-[95vw] max-w-[1200px] translate-x-[-50%] translate-y-[-50%] overflow-y-auto rounded-lg bg-white p-4 md:p-6 shadow-lg z-50">
+        <Dialog.Content className="fixed left-1/2 top-1/2 max-h-[85vh] w-[95vw] max-w-[1200px] -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-lg bg-white p-4 md:p-6 shadow-lg z-50">
           <Dialog.Title className="text-xl font-semibold">
-            Créer une nouvelle facture
+            {invoice ? 'Modifier la facture' : 'Créer une nouvelle facture'}
           </Dialog.Title>
           <Dialog.Description className="mt-2 text-sm text-gray-500">
-            Remplissez les informations ci-dessous pour créer une nouvelle
-            facture.
+            {invoice
+              ? 'Mettez à jour les informations de la facture.'
+              : 'Remplissez les informations ci-dessous pour créer une nouvelle facture.'}
           </Dialog.Description>
 
           <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">

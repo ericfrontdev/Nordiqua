@@ -1,16 +1,17 @@
-import { create } from 'zustand';
+import { create } from 'zustand'
 
 export interface Invoice {
-  id: string;
-  client: string;
-  date: string;
-  amount: number;
-  status: 'paid' | 'pending' | 'overdue';
+  id: string
+  client: string
+  date: string
+  amount: number
+  status: 'paid' | 'pending' | 'overdue'
 }
 
 interface InvoiceStore {
-  invoices: Invoice[];
-  addInvoice: (invoice: Invoice) => void;
+  invoices: Invoice[]
+  addInvoice: (invoice: Invoice) => void
+  updateInvoice: (invoice: Invoice) => void
 }
 
 export const useInvoiceStore = create<InvoiceStore>((set) => ({
@@ -37,7 +38,14 @@ export const useInvoiceStore = create<InvoiceStore>((set) => ({
       status: 'overdue',
     },
   ],
-  addInvoice: (invoice) => set((state) => ({
-    invoices: [...state.invoices, invoice],
-  })),
-}));
+  addInvoice: (invoice) =>
+    set((state) => ({
+      invoices: [...state.invoices, invoice],
+    })),
+  updateInvoice: (invoice) =>
+    set((state) => ({
+      invoices: state.invoices.map((inv) =>
+        inv.id === invoice.id ? invoice : inv
+      ),
+    })),
+}))

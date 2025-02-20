@@ -2,3 +2,8 @@ node_modules
 .env
 nordiqua/frontend/src/.env
 nordiqua/backend/.env
+.DS_Store
+nordiqua/frontend/node_modules
+nordiqua/backend/node_modules
+nordiqua/frontend/build
+nordiqua/backend/build
